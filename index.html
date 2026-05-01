@@ -84,6 +84,16 @@
     <div id="message" role="status"></div>
   </div>
   <script>
+    const params = new URLSearchParams(window.location.search);
+    
+    window.onload = function(){
+      if (params.has('reservationId')) {
+        const reservationId = params.get('reservationId');
+        document.getElementById('reservationId').value = reservationId;
+        
+      }
+    }
+
     const apiUrl = 'https://script.google.com/macros/s/AKfycbyQ3tSNXh69-T410KQAv7Z986v13q3rG5ji9jC9UHyOoXXw4Kyf_alx6c_THs6bH0qKtw/exec?';
     const form = document.getElementById('checkin-form');
     const reservationIdInput = document.getElementById('reservationId');
