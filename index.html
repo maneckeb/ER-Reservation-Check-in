@@ -104,13 +104,12 @@
         showMessage('Please enter your Reservation ID.', 'error');
         return;
       }
-      apiUrlWithParams = `${apiUrl}&reservationIdExternal=${encodeURIComponent(reservationId)}&branchId=1`;
+      apiUrlWithParams = `${apiUrl}reservationId=${encodeURIComponent(reservationId)}&branchId=1`;
+      console.log(apiUrlWithParams);
       try {
         const response = await fetch(apiUrlWithParams, {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
+          
           
         });
 
