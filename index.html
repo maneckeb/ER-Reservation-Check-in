@@ -71,6 +71,31 @@
       color: #8a2222;
       border: 1px solid #f1b0b0;
     }
+    /* Loading overlay */
+    #overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.35);
+      z-index: 1000;
+    }
+    #overlay.active {
+      display: flex;
+    }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 6px solid rgba(255,255,255,0.6);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -82,6 +107,9 @@
       <button type="submit">Check In</button>
     </form>
     <div id="message" role="status"></div>
+  </div>
+  <div id="overlay" aria-hidden="true">
+    <div class="spinner" role="status" aria-label="Loading"></div>
   </div>
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -98,6 +126,17 @@
     const form = document.getElementById('checkin-form');
     const reservationIdInput = document.getElementById('reservationId');
     const messageEl = document.getElementById('message');
+    const overlayEl = document.getElementById('overlay');
+
+    function showOverlay() {
+      overlayEl.classList.add('active');
+      overlayEl.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideOverlay() {
+      overlayEl.classList.remove('active');
+      overlayEl.setAttribute('aria-hidden', 'true');
+    }
 
     function showMessage(text, type) {
       messageEl.textContent = text;
@@ -116,12 +155,9 @@
       }
       apiUrlWithParams = `${apiUrl}reservationId=${encodeURIComponent(reservationId)}&branchId=1`;
       console.log(apiUrlWithParams);
+      showOverlay();
       try {
-        const response = await fetch(apiUrlWithParams, {
-          method: 'GET',
-          
-          
-        });
+        const response = await fetch(apiUrlWithParams, { method: 'GET' });
 
         const responseBody = await response.json().catch(() => ({}));
 
@@ -135,6 +171,8 @@
         }
       } catch (error) {
         showMessage('Unable to reach the server. Please ask an associate for assistance', 'error');
+      } finally {
+        hideOverlay();
       }
     });
   </script>
