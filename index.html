@@ -162,7 +162,7 @@
         const responseBody = await response.json().catch(() => ({}));
 
         if (responseBody.status === 200) {
-          showMessage('Congratulations, you are succesfully checkied in to your Appointment', 'success');
+          showMessage('Congratulations, you are succesfully checked in to your Appointment', 'success');
         } else if (responseBody.status === 404) {
           showMessage('This Reservation ID was not found', 'error');
         } else {
