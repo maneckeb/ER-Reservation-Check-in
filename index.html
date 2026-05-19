@@ -122,7 +122,7 @@
       }
     }
 
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbyQ3tSNXh69-T410KQAv7Z986v13q3rG5ji9jC9UHyOoXXw4Kyf_alx6c_THs6bH0qKtw/exec?';
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbxFVYKUAqUE_fBgd9xBMxMXRLk-TIadplzZMiLLSQyTRvpnlqOqgVVOvlZmpiEbX0d4yQ/exec';
     const form = document.getElementById('checkin-form');
     const reservationIdInput = document.getElementById('reservationId');
     const messageEl = document.getElementById('message');
@@ -163,6 +163,7 @@
 
         if (responseBody.status === "200") {
           showMessage('Congratulations, you are succesfully checked in to your Appointment', 'success');
+          reserv
         } else if (responseBody.status === "404") {
           showMessage('This Reservation ID was not found', 'error');
         } else {
