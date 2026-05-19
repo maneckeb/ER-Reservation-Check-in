@@ -153,7 +153,7 @@
         showMessage('Please enter your Reservation ID.', 'error');
         return;
       }
-      apiUrlWithParams = `${apiUrl}reservationId=${encodeURIComponent(reservationId)}&branchId=1`;
+      apiUrlWithParams = `${apiUrl}?reservationId=${encodeURIComponent(reservationId)}&branchId=1`;
       console.log(apiUrlWithParams);
       showOverlay();
       try {
