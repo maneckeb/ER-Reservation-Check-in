@@ -122,7 +122,7 @@
       }
     }
 
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbzc3_tembqpMQCflSB4ET5UB0blYR_sAk84nJk3MM2scorp07aR2MzK8WGPvHO-xx4hUA/exec';
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbyWmlNB_g8vFcK9Xkm9SeX6cS0U0TUIQjAbY76m1Y97PH8pZ3zm_v0KeDTJRYncdl8mZg/exec';
     const form = document.getElementById('checkin-form');
     const reservationIdInput = document.getElementById('reservationId');
     const messageEl = document.getElementById('message');
@@ -153,7 +153,7 @@
         showMessage('Please enter your Reservation ID.', 'error');
         return;
       }
-      apiUrlWithParams = `${apiUrl}?reservationId=${encodeURIComponent(reservationId)}&branchId=1`;
+      apiUrlWithParams = `${apiUrl}reservationId=${encodeURIComponent(reservationId)}&branchId=1`;
       console.log(apiUrlWithParams);
       showOverlay();
       try {
