@@ -122,7 +122,7 @@
       }
     }
 
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbyWmlNB_g8vFcK9Xkm9SeX6cS0U0TUIQjAbY76m1Y97PH8pZ3zm_v0KeDTJRYncdl8mZg/exec';
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbwidZIRqmudjZJaKfdSgvMJ75gWSytVYUpLQipYKGF2pYc8Zf1ak87R3094xwgM53Cw0g/exec';
     const form = document.getElementById('checkin-form');
     const reservationIdInput = document.getElementById('reservationId');
     const messageEl = document.getElementById('message');
@@ -153,7 +153,7 @@
         showMessage('Please enter your Reservation ID.', 'error');
         return;
       }
-      apiUrlWithParams = `${apiUrl}?reservationId=${encodeURIComponent(reservationId)}&branchId=1`;
+      apiUrlWithParams = `${apiUrl}?reservationId=${encodeURIComponent(reservationId)}&branchId=2`;
       console.log(apiUrlWithParams);
       showOverlay();
       try {
@@ -164,8 +164,6 @@
         if (responseBody.status === "200") {
           showMessage('Congratulations, you are succesfully checked in to your Appointment', 'success');
           
-        } else if (responseBody.status === "404") {
-          showMessage('This Reservation ID was not found', 'error');
         } else {
           const detail = responseBody.data || 'An unexpected error occurred.';
           showMessage(`${detail} Please ask an associate for assistance`, 'error');
