@@ -145,8 +145,8 @@
     const form = document.getElementById('checkin-form');
     const form2 = document.getElementById('checkin-form-2');
     const reservationIdInput = document.getElementById('reservationId');
-    const lastName = document.getElementById('lastName');
-    const firstName = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const firstNameInput = document.getElementById('firstName');
     const messageEl = document.getElementById('message');
     const overlayEl = document.getElementById('overlay');
 
@@ -169,8 +169,8 @@
 
     form2.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const lastName = lastName.value.trim();
-      const firstName = firstName.value.trim();
+      const lastName = lastNameInput.value.trim();
+      const firstName = firstNameInput.value.trim();
 
       if (!lastName) {
         showMessage('Please enter your Last Name.', 'error');
