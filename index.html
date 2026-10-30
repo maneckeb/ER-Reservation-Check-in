@@ -114,6 +114,21 @@
   <div id="overlay" aria-hidden="true">
     <div class="spinner" role="status" aria-label="Loading"></div>
   </div>
+<br>
+  <div class="container">
+    <h1>Boston Ski + Tennis Seasonal Lease Appointment Check-in</h1>
+    <form id="checkin-form-2">
+      <label for="firsttName">First Name (The user who created the reservation</label>
+      <input id="firstName" name="firstName" type="text" required placeholder="Enter your first name" />
+       <label for="lastName">Last Name (The user who created the reservation</label>
+      <input id="lastName" name="lastName" type="text" required placeholder="Enter your last name" />
+      <button type="submit">Check In</button>
+    </form>
+    <div id="message" role="status"></div>
+  </div>
+  <div id="overlay" aria-hidden="true">
+    <div class="spinner" role="status" aria-label="Loading"></div>
+  </div>
   <script>
     const params = new URLSearchParams(window.location.search);
     
@@ -126,8 +141,12 @@
     }
 
     const apiUrl = 'https://script.google.com/macros/s/AKfycbyqnKMHhmCme23eK1DGHI2pssshUbLibubdljUgyQdNDbc3q08qV_locfPJbVAfszLWvA/exec';
+    const apiUrl2 = 'https://script.google.com/macros/s/AKfycbyAVkJNfRldns-ZYXXAcNRXcMedc2fF_tCQ6UM3cqooWfKj0faum48ChnoR8iwdCcVN/exec'
     const form = document.getElementById('checkin-form');
+    const form2 = document.getElementById('checkin-form-2');
     const reservationIdInput = document.getElementById('reservationId');
+    const lastName = document.getElementById('lastName');
+    const firstName = document.getElementById('firstName');
     const messageEl = document.getElementById('message');
     const overlayEl = document.getElementById('overlay');
 
@@ -147,6 +166,43 @@
       messageEl.classList.add(type);
       messageEl.style.display = 'block';
     }
+
+    form2.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const lastName = lastName.value.trim();
+      const firstName = firstName.value.trim();
+
+      if (!lastName) {
+        showMessage('Please enter your Last Name.', 'error');
+        return;
+      }
+      if (!firstName) {
+        showMessage('Please enter your First Name.', 'error');
+        return;
+      }
+      apiUrlWithParams2 = `${apiUrl2}?lastName=${encodeURIComponent(lastName)}&firstName=${encodeURIComponent(firstName)}&branchId=14`;
+      console.log(apiUrlWithParams2);
+      showOverlay();
+      try {
+        const response = await fetch(apiUrlWithParams2, { method: 'GET' });
+
+        const responseBody = await response.json().catch(() => ({}));
+
+        if (responseBody.status === "200") {
+          showMessage('Please make your way to the Leasing Center', 'success');
+          
+        } else {
+          const detail = responseBody.data || 'An unexpected error occurred.';
+          showMessage(`${detail}`, 'error');
+        }
+      } catch (error) {
+        showMessage('Unable to reach the server. Please ask an associate for assistance', 'error');
+      } finally {
+        lastName.value = '';
+        firstName.value = '';
+        hideOverlay();
+      }
+    });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
