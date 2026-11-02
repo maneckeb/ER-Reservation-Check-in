@@ -10,6 +10,7 @@
       background: #f7f7f7;
       color: #333;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
@@ -57,25 +58,25 @@
       border: 1px solid #e85b2d;
       color: #000000;
     }
-    #message {
+    .message {
       margin-top: 18px;
       padding: 14px 16px;
       border-radius: 8px;
       display: none;
       line-height: 1.4;
     }
-    #message.success {
+    .message.success {
       background: #e6ffed;
       color: #1c662d;
       border: 1px solid #a8e5b5;
     }
-    #message.error {
+    .message.error {
       background: #ffe8e8;
       color: #8a2222;
       border: 1px solid #f1b0b0;
     }
     /* Loading overlay */
-    #overlay {
+    .overlay {
       position: fixed;
       inset: 0;
       display: none;
@@ -84,7 +85,7 @@
       background: rgba(0,0,0,0.35);
       z-index: 1000;
     }
-    #overlay.active {
+    .overlay.active {
       display: flex;
     }
     .spinner {
@@ -109,11 +110,11 @@
       <input id="reservationId" name="reservationId" type="text" required placeholder="Enter your reservation ID" />
       <button type="submit">Check In</button>
     </form>
-    <div id="message" role="status"></div>
+    <div id="message" class="message" role="status"></div>
   </div>
-  <div id="overlay2" aria-hidden="true">
+  <div id="overlay" class="overlay" aria-hidden="true">
     <div class="spinner" role="status" aria-label="Loading"></div>
-  </div>
+  </div> 
 <br/>
   <div class="container">
     <h1>Boston Ski + Tennis Seasonal Lease Appointment Check-in</h1>
@@ -124,9 +125,9 @@
       <input id="lastName" name="lastName" type="text" required placeholder="Enter your last name" />
       <button type="submit">Check In</button>
     </form>
-    <div id="message" role="status"></div>
+    <div id="message2" class="message" role="status"></div>
   </div>
-  <div id="overlay" aria-hidden="true">
+  <div id="overlay2" class="overlay" aria-hidden="true">
     <div class="spinner" role="status" aria-label="Loading"></div>
   </div>
   <script>
@@ -141,7 +142,7 @@
     }
 
     const apiUrl = 'https://script.google.com/macros/s/AKfycbyqnKMHhmCme23eK1DGHI2pssshUbLibubdljUgyQdNDbc3q08qV_locfPJbVAfszLWvA/exec';
-    const apiUrl2 = 'https://script.google.com/macros/s/AKfycbyAVkJNfRldns-ZYXXAcNRXcMedc2fF_tCQ6UM3cqooWfKj0faum48ChnoR8iwdCcVN/exec'
+    const apiUrl2 = 'https://script.google.com/macros/s/AKfycbxMqJd3Si9BAKr9_gs1CZm6EOobKhDJDgaeUXaghe9-EWDQmLipvE8-Plfo6z9rY1T7/exec';
     const form = document.getElementById('checkin-form');
     const form2 = document.getElementById('checkin-form-2');
     const reservationIdInput = document.getElementById('reservationId');
@@ -149,15 +150,25 @@
     const firstNameInput = document.getElementById('firstName');
     const messageEl = document.getElementById('message');
     const overlayEl = document.getElementById('overlay');
+    const messageEl2 = document.getElementById('message2');
+    const overlayEl2 = document.getElementById('overlay2');
 
     function showOverlay() {
       overlayEl.classList.add('active');
       overlayEl.setAttribute('aria-hidden', 'false');
     }
+    function showOverlay2() {
+      overlayEl2.classList.add('active');
+      overlayEl2.setAttribute('aria-hidden', 'false');
+    }
 
     function hideOverlay() {
       overlayEl.classList.remove('active');
       overlayEl.setAttribute('aria-hidden', 'true');
+    }
+    function hideOverlay2() {
+      overlayEl2.classList.remove('active');
+      overlayEl2.setAttribute('aria-hidden', 'true');
     }
 
     function showMessage(text, type) {
@@ -166,6 +177,12 @@
       messageEl.classList.add(type);
       messageEl.style.display = 'block';
     }
+     function showMessage2(text, type) {
+      messageEl2.innerHTML = text;
+      messageEl2.className = '';
+      messageEl2.classList.add(type);
+      messageEl2.style.display = 'block';
+    }
 
     form2.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -173,34 +190,34 @@
       const firstName = firstNameInput.value.trim();
 
       if (!lastName) {
-        showMessage('Please enter your Last Name.', 'error');
+        showMessage2('Please enter your Last Name.', 'error');
         return;
       }
       if (!firstName) {
-        showMessage('Please enter your First Name.', 'error');
+        showMessage2('Please enter your First Name.', 'error');
         return;
       }
       apiUrlWithParams2 = `${apiUrl2}?lastName=${encodeURIComponent(lastName)}&firstName=${encodeURIComponent(firstName)}&branchId=10`;
       console.log(apiUrlWithParams2);
-      showOverlay();
+      showOverlay2();
       try {
         const response = await fetch(apiUrlWithParams2, { method: 'GET' });
 
         const responseBody = await response.json().catch(() => ({}));
 
         if (responseBody.status === "200") {
-          showMessage('Please make your way to the Leasing Center', 'success');
+          showMessage2('Please make your way to the Leasing Center', 'success');
           
         } else {
           const detail = responseBody.data || 'An unexpected error occurred.';
-          showMessage(`${detail}`, 'error');
+          showMessage2(`${detail}`, 'error');
         }
       } catch (error) {
-        showMessage('Unable to reach the server. Please ask an associate for assistance', 'error');
+        showMessage2('Unable to reach the server. Please ask an associate for assistance', 'error');
       } finally {
         lastName.value = '';
         firstName.value = '';
-        hideOverlay();
+        hideOverlay2();
       }
     });
 
